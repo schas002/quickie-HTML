@@ -1,0 +1,66 @@
+<html>
+  <head>
+    <title>quickie HTML</title>
+    <link rel="stylesheet" href="normalize.css" type="text/css" />
+    <link rel="stylesheet" href="sakura.css" type="text/css" />
+  </head>
+  <body>
+    <div id="myHTML">
+      <i style="opacity: 0.5; font-size: big;">Loading document...</i>
+    </div>
+    <script id="myJS"></script>
+    <script>
+      function $(id) {
+        return document.getElementById(id);
+      }
+
+      function qslookup(qs, id) {
+        match = qs.match(new RegExp(`[?&]${id}=([^&]+)`, 'i'));
+        if (match === null) {
+          return false;
+        } else {
+          return match[1];
+        }
+      }
+
+      const qs = location.search;
+      let myDocument;
+      const myHTML = qslookup(qs, 'myHTML');
+      if (myHTML === false) {
+        myDocument = `
+        <h1>Welcome to quickie HTML! ^_^</h1>
+        <p>It's a quickie HTML/JS sandbox!</p>
+        <h2>Getting started</h2>
+        <p>Put your HTML/JS in query string parameters <code>myHTML</code> and
+        <code>myJS</code>, respectively. You can escape using <code>.</code>
+        instead of <code>%</code>.</p>
+        <h2>Who made it?</h2>
+        <p><a href="https://github.com/schas002">Andrew Zyabin</a>. He has a
+        Mastodon address of
+        <a href="https://botsin.space/@zyabin101">
+        <code>@zyabin101@botsin.space</code></a>.</p>
+        <p>Ah yeah, <a href="https://github.com/schas002/quickie-HTML">quickie
+        HTML is on GitHub</a>.</p>
+        <h2>It's really nice!</h2>
+        <p>Thanks! ^_^</p>
+        <h2>License</h2>
+        <p><a href="LICENSE">MIT</a> &copy; Andrew Zyabin</p>
+        <p>Ah yeah, quickie HTML also uses
+        <a href="https://github.com/necolas/normalize.css">Normalize.css</a>
+        and <a href="https://github.com/oxalorg/sakura">sakura</a> under the
+        same license.</p>
+        `;
+      } else {
+        myDocument = unescape(myHTML.replace(/\./g, '%'));
+      }
+      $('myHTML').innerHTML = myDocument;
+
+      let myScript = '';
+      const myJS = qslookup(qs, 'myJS');
+      if (myJS !== false) {
+        myScript = unescape(myJS.replace(/\./g, '%'));
+      }
+      $('myJS').innerHTML = myScript;
+    </script>
+  </body>
+</html>
